@@ -15,8 +15,14 @@ function HelloWorld() {
                 </nav>
             </header>
             <div className="info-text-block" id="project">
-                <h1>Project for Onix</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim, quod!</p>
+                <h1>My hobbies:</h1>
+                <ul>
+                    <li>history;</li>
+                    <li>political philosophy;</li>
+                    <li>programming;</li>
+                    <li>european soccer;</li>
+                    <li>like to play computer games.</li>
+                </ul>
                 <button>Learn more</button>
             </div>
             <footer>
