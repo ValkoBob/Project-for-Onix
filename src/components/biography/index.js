@@ -6,44 +6,61 @@ class Bio extends Component {
     this.state = {
       sortedByFunc: false,
       sortedByBubble: false,
-      events: [
-        {
-          date: "1994",
-          event: "BirthDay"
-        },
-        {
-          date: "2000",
-          event: "Start to study at school"
-        },
-        {
-          date: "2008",
-          event: "Start to study in another school"
-        },
-        {
-          date: "2010",
-          event: "End the school"
-        },
-        {
-          date: "2010",
-          event: "Start to study in SPI"
-        },
-        {
-          date: "2015",
-          event: "Graduated from Institute"
-        },
-        {
-          date: "2015",
-          event: "Start to study in KDPU"
-        },
-        {
-          date: "2017",
-          event: "Graduated from University"
-        },
-        {
-          date: "2018",
-          event: "Start to study Programming"
-        }
-      ],
+      events: {
+        0:
+            {
+              date: "1994",
+              event: "BirthDay"
+            }
+        ,
+        1:
+            {
+              date: "2000",
+              event: "Start to study at school"
+            }
+        ,
+        2:
+            {
+              date: "2008",
+              event: "Start to study in another school"
+            }
+        ,
+        3:
+            {
+              date: "2010",
+              event: "End the school"
+            }
+        ,
+        4:
+            {
+              date: "2010",
+              event: "Start to study in SPI"
+            }
+        ,
+        5:
+            {
+              date: "2015",
+              event: "Graduated from Institute"
+            }
+        ,
+        6:
+            {
+              date: "2015",
+              event: "Start to study in KDPU"
+            }
+        ,
+        7:
+            {
+              date: "2017",
+              event: "Graduated from University"
+            }
+        ,
+        8:
+            {
+              date: "2018",
+              event: "Start to study Programming"
+            }
+      },
       text: '',
       year: '',
       lastText: '',
@@ -52,9 +69,15 @@ class Bio extends Component {
   }
 
   sortByFunction = () => {
-    const updateEvents = this.state.events.slice(0);
+    const updateEvents = {...this.state.events};
     const updateSorting = this.state.sortedByFunc;
-    updateSorting ? updateEvents.sort((a, b) => ((+a.date) - (+b.date))) : updateEvents.reverse();
+    let sorted;
+    updateSorting ? sorted = Object.values(updateEvents).sort((a, b) => ((+a.date) - (+b.date)))
+        : sorted = Object.values(updateEvents).reverse();
+
+    for (let key in Object.keys(updateEvents)) {
+      updateEvents[key] = sorted[key];
+    }
     this.setState({
       events: updateEvents,
       sortedByFunc: !updateSorting
@@ -62,20 +85,19 @@ class Bio extends Component {
   };
 
   sortByBubbleSorting = () => {
-    const updateEvents = this.state.events.slice(0);
+    const updateEvents = {...this.state.events};
     const updateSorting = this.state.sortedByBubble;
-    for (let i = updateEvents.length - 1; i >= 0; i--) {
+    for (let i = Object.keys(updateEvents).length - 1; i >= 0; i--) {
       for (let j = 0; j < i; j++) {
         let current = updateEvents[j];
         let previous = updateEvents[j + 1];
-        if(updateSorting){
+        if (updateSorting) {
           if (current.event.toLowerCase() > previous.event.toLowerCase()) {
             let temp = updateEvents[j];
             updateEvents[j] = updateEvents[j + 1];
             updateEvents[j + 1] = temp;
           }
-        }
-        else{
+        } else {
           if (current.event.toLowerCase() < previous.event.toLowerCase()) {
             let temp = updateEvents[j];
             updateEvents[j] = updateEvents[j + 1];
@@ -102,8 +124,9 @@ class Bio extends Component {
           </tr>
           </thead>
           <tbody id="tbody">
+          {}
           {
-            data.map((row, index) => Bio.createTable(row, index))
+            Object.entries(data).map(([index, row]) => Bio.createTable(row, index))
           }
           </tbody>
         </table>
@@ -120,14 +143,14 @@ class Bio extends Component {
     )
   };
 
-  addYear = (e) =>{
+  addYear = (e) => {
     e.preventDefault();
     this.setState({
       year: e.target.value
     })
   };
 
-  addText = (e) =>{
+  addText = (e) => {
     e.preventDefault();
     this.setState({
       text: e.target.value
@@ -135,39 +158,36 @@ class Bio extends Component {
   };
 
   addEvent = () => {
-    const updateEvents = this.state.events.slice(0);
+    const updateEvents = {...this.state.events};
     const year = +this.state.year;
     const text = this.state.text;
-    if(!year || !text){
+    if (!year || !text) {
       return;
     }
-    if(isNaN(year)){
+    if (isNaN(year)) {
       return;
     }
-    if(year <= 0 || year >= 3000){
+    if (year <= 0 || year >= 3000) {
       return;
     }
-    updateEvents.push({
+    updateEvents[Object.keys(updateEvents).length] = {
       date: year,
       event: text
-    });
+    };
     this.setState({
       events: updateEvents
     })
   };
 
   deleteLastEvent = () => {
-    const updateEvents = this.state.events.slice(0);
-    const data = this.state.events;
+    const updateEvents = {...this.state.events};
     const lastYear = this.state.year;
     const lastText = this.state.text;
-    let makeSplice = true;
-    data.map((item, index) => {
-      if(+item.date === +lastYear && item.event === lastText && makeSplice){
-        updateEvents.splice(index, 1);
-        makeSplice = false;
+    for (let key in updateEvents) {
+      if (lastText === updateEvents[key].event && +lastYear === +updateEvents[key].date) {
+        delete updateEvents[key];
       }
-    });
+    }
     this.setState({
       events: updateEvents,
     })
@@ -186,7 +206,7 @@ class Bio extends Component {
               <form>
                 <div className="inputTag">
                   <label className="labelForInput"> Add event:</label>
-                  <input type="text" onChange={this.addYear} className="inputForAdd" placeholder='year...' />
+                  <input type="text" onChange={this.addYear} className="inputForAdd" placeholder='year...'/>
                   <textarea onChange={this.addText} className="textArea" placeholder='text...'/>
                 </div>
                 <div className="buttonTag">
