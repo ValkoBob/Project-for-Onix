@@ -124,7 +124,6 @@ class Bio extends Component {
           </tr>
           </thead>
           <tbody id="tbody">
-          {}
           {
             Object.entries(data).map(([index, row]) => Bio.createTable(row, index))
           }
@@ -132,7 +131,6 @@ class Bio extends Component {
         </table>
     )
   }
-
 
   static createTable(row, index) {
     return (

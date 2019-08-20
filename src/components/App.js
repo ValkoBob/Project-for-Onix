@@ -3,6 +3,7 @@ import Header from './header'
 import Main from './main'
 import Footer from './footer'
 import Bio from './biography'
+import Forecast from './forecast'
 import '../assets/css/index.css';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           </div>
         </section>
         <Bio/>
+        <Forecast/>
       </Fragment>
   )
 }
