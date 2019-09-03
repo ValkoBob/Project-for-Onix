@@ -183,7 +183,7 @@ td {
   padding: 2% 5%;
 }
 
-td:hover {
+.selected {
   background: rgba(255, 255, 255, 0.2);
 }
 
@@ -289,5 +289,14 @@ textarea {
 
 .inputForm {
   display: flex;
+}
+
+.loadingImage {
+  position: fixed;
+  z-index: 2;
+  background: whitesmoke;
+}
+.hidden {
+  display: none;
 }
 

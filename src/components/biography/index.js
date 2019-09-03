@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component} from 'react'
 
 class Bio extends Component {
   constructor(props) {
@@ -6,65 +6,57 @@ class Bio extends Component {
     this.state = {
       sortedByFunc: false,
       sortedByBubble: false,
-      events: {
-        0:
-            {
-              date: "1994",
-              event: "BirthDay"
-            }
-        ,
-        1:
-            {
-              date: "2000",
-              event: "Start to study at school"
-            }
-        ,
-        2:
-            {
-              date: "2008",
-              event: "Start to study in another school"
-            }
-        ,
-        3:
-            {
-              date: "2010",
-              event: "End the school"
-            }
-        ,
-        4:
-            {
-              date: "2010",
-              event: "Start to study in SPI"
-            }
-        ,
-        5:
-            {
-              date: "2015",
-              event: "Graduated from Institute"
-            }
-        ,
-        6:
-            {
-              date: "2015",
-              event: "Start to study in KDPU"
-            }
-        ,
-        7:
-            {
-              date: "2017",
-              event: "Graduated from University"
-            }
-        ,
-        8:
-            {
-              date: "2018",
-              event: "Start to study Programming"
-            }
-      },
+      events: [
+        {
+          date: "1994",
+          event: "BirthDay"
+        },
+        {
+          date: "2000",
+          event: "Start to study at school"
+
+        },
+        {
+          date: "2008",
+          event: "Start to study in another school"
+
+        },
+        {
+          date: "2010",
+          event: "End the school"
+
+        },
+        {
+          date: "2010",
+          event: "Start to study in SPI"
+
+        },
+        {
+          date: "2015",
+          event: "Graduated from Institute"
+        },
+        {
+          date: "2015",
+          event: "Start to study in KDPU"
+        },
+        {
+          date: "2017",
+          event: "Graduated from University"
+        },
+        {
+          date: "2018",
+          event: "Start to study Programming"
+
+        }
+      ],
+      selected: [],
       text: '',
       year: '',
       lastText: '',
-      lastYear: ''
+      lastYear: '',
+      showImage: true,
+      error: false,
+      isLoading: false,
     };
   }
 
@@ -123,22 +115,74 @@ class Bio extends Component {
             </th>
           </tr>
           </thead>
-          <tbody id="tbody">
-          {
-            Object.entries(data).map(([index, row]) => Bio.createTable(row, index))
-          }
+          <tbody id="tbody" onDrop={this.onDrop}>
+          {Object.entries(data).map(([index, row]) =>
+              <tr key={index}
+                  id={index}
+                  className={this.state.selected[index] ? "selected" : ""}
+                  onClick={this.rowHandleClick}
+                  draggable={true}
+                  onDragStart={this.dragStart}
+                  onDragOver={this.dragOver}
+                  onDragLeave={this.dragLeave}>
+                <td className="date">{row.date}</td>
+                <td className="event">{row.event}</td>
+              </tr>
+          )}
           </tbody>
         </table>
     )
   }
 
-  static createTable(row, index) {
-    return (
-        <tr key={index}>
-          <td className="date">{row.date}</td>
-          <td className="event">{row.event}</td>
-        </tr>
-    )
+  rowHandleClick = event => {
+    event.preventDefault();
+    let {selected} = this.state;
+    const index = event.currentTarget.id;
+    let current = selected[index];
+    selected.fill(false);
+    selected[index] = !current;
+    this.setState({
+      selected,
+      currentIndex: index
+    })
+  };
+
+  dragStart = (e) => {
+    const id = e.currentTarget.id;
+    e.dataTransfer.setData('id', id);
+    e.dataTransfer.effectAllowed = 'move';
+    const {selected} = this.state;
+    selected.fill(false);
+    selected[id] = true;
+    this.setState({
+      selected
+    })
+  };
+
+  dragOver = (e) => {
+    e.preventDefault();
+    e.currentTarget.style.color = 'grey';
+  };
+
+  dragLeave = (e) => {
+    e.preventDefault();
+    e.currentTarget.style.color = 'black';
+  };
+
+  onDrop = (e) => {
+    const {events, selected} = this.state;
+    console.log(events);
+    console.log(selected);
+    const idFrom = e.dataTransfer.getData('id');
+    const idTo = e.target.parentNode.id;
+    events.splice(idTo, 0, events.splice(idFrom, 1)[0]);
+    e.target.parentNode.style.color = 'black';
+    selected.fill(false);
+    selected[idTo] = true;
+    this.setState({
+      events,
+      selected
+    })
   };
 
   addYear = (e) => {
@@ -191,6 +235,29 @@ class Bio extends Component {
     })
   };
 
+  handleError = () => {
+    alert('error');
+    let {error} = this.state;
+    error = !error;
+    this.setState({
+      error
+    })
+  };
+
+  toggleImage = () => {
+    let {showImage} = this.state;
+    showImage = !showImage;
+    this.setState({
+      showImage
+    })
+  };
+
+  handleDocumentLoad = () => {
+    this.toggleImage();
+    setTimeout(this.toggleImage, 2000);
+
+  };
+
 
   render() {
     return (
@@ -198,6 +265,12 @@ class Bio extends Component {
           <div className="biography">
             <div className='title'>
               <h3>Biography</h3>
+              <img alt="load bar" src={require('./table/load.gif')}
+                   onLoad={this.handleDocumentLoad}
+                   className={this.state.showImage ? 'loadingImage' : 'loadingImage hidden'}/>
+              <img alt="food" src={require('./table/error.gif')}
+                   onError={this.handleError}
+                   className={this.state.error ? 'loadingImage' : 'loadingImage hidden'}/>
             </div>
             {this.showTable(this.state.events)}
             <div className="addToTable">
