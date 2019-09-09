@@ -6,7 +6,7 @@ import Bio from './biography'
 import Forecast from './forecast'
 import '../assets/css/index.css';
 
-function App() {
+export default function App() {
   return (
       <Fragment>
         <section className="container">
@@ -21,5 +21,3 @@ function App() {
       </Fragment>
   )
 }
-
-export default App

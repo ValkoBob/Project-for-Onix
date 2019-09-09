@@ -6,7 +6,6 @@ import Weather from "./scenes/weather";
 class Forecast extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       API_KEY: "d90ac9c73c6a02a42b4cf0bdfbcd3ae9",
       data: undefined,
@@ -20,6 +19,9 @@ class Forecast extends Component {
     }
   }
 
+  /**
+   * Component make mounting in process of downloading API
+   */
   componentDidMount() {
     if (this.state.inputCity !== undefined) {
       fetch(`http://api.openweathermap.org/data/2.5/weather?q=${this.state.inputCity}
@@ -43,6 +45,11 @@ class Forecast extends Component {
     }
   }
 
+  /**
+   * Function converts milliseconds to seconds, minutes, hours
+   * @param duration milliseconds
+   * @returns {string} readable date
+   */
   msToTime(duration) {
     let seconds, minutes, hours, date = new Date();
     date.setTime(duration);
