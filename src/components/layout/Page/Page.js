@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PageView from './PageView';
 
 export default class Header extends Component {
@@ -6,14 +6,14 @@ export default class Header extends Component {
     super(props);
     this.state = {
       projectName: 'My hobbies'
-    }
+    };
   }
 
-  render(){
+  render() {
     return (
-        <PageView
-            projectName={this.state.projectName}
-        />
-    )
+      <PageView
+        projectName={this.state.projectName}
+      />
+    );
   }
 }

@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import { Router, Route } from 'react-router-dom';
+import React, { Component } from 'react';
+import { Switch, Router, Route } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import Page from './components/layout/Page/Page';
 import Home from './components/pages/Home/Home';
@@ -13,10 +13,12 @@ class App extends Component {
 
   render() {
     return (
-        <Router history={this.history}>
-          <Route exact strict path="/" component={Page} />
-          <Route exact strict path="/" component={Home} />
-        </Router>
+      <Router history={this.history}>
+        <Page/>
+        <Switch>
+          <Route exact strict path="/" component={Home}/>
+        </Switch>
+      </Router>
     );
   }
 }

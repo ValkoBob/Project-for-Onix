@@ -1,16 +1,29 @@
-import React, {Component} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-const HeaderView = (props) => {
+const HeaderView = ({ logo, menu }) => {
   return (
-      <header>
-        <a className="logo">{props.logo}</a>
-        <nav className="menu">
-          {props.menu.map( (menuItem) =>
-            <a href="#">{menuItem}</a>
-          )}
-        </nav>
-      </header>
-  )
+    <header>
+      <a className="logo">{logo}</a>
+      <nav className="menu">
+        {menu.map((menuItem) =>
+          <a href="#">{menuItem}</a>
+        )}
+      </nav>
+    </header>
+  );
+};
+
+HeaderView.propTypes = {
+  logo: PropTypes.string,
+  menu: PropTypes.arrayOf(
+    PropTypes.objectOf(
+      PropTypes.string
+    ))
+};
+
+HeaderView.defaultProps = {
+  projectName: ''
 };
 
 export default HeaderView;
