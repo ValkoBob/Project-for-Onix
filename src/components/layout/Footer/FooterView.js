@@ -6,14 +6,16 @@ const FooterView = ({ gitHub, linkToOriginal, authorName }) => {
     <footer>
       <div className="socials">
         <div className="git">
-          <a href={gitHub}><i className="fab fa-github"/></a>
+          <a href={gitHub} aria-label="Save"><i className="fab fa-github"/></a>
         </div>
         <div className="link_to_original">
-          <a href={linkToOriginal}><i className="far fa-image"/></a>
+          <a href={linkToOriginal} aria-label="Save"><i className="far fa-image"/></a>
         </div>
       </div>
       <h2 id="author">
-        Author: {authorName}
+        Author:
+        {' '}
+        {authorName}
       </h2>
     </footer>
   );

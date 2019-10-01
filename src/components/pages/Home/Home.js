@@ -53,10 +53,6 @@ export default class Home extends Component {
       selected: [],
       text: '',
       year: '',
-      lastText: '',
-      lastYear: '',
-      API_KEY: 'd90ac9c73c6a02a42b4cf0bdfbcd3ae9',
-      data: undefined,
       inputCity: 'Kiev',
       temp: undefined,
       city: undefined,
@@ -74,11 +70,12 @@ export default class Home extends Component {
    */
 
   componentDidMount() {
-    if (this.state.inputCity !== undefined) {
-      fetch(this.state.linkToAPI)
-        .then(response => response.json())
-        .then(data => {
-          let sunset = data.sys.sunset;
+    const { inputCity, linkToAPI } = this.state;
+    if (inputCity !== undefined) {
+      fetch(linkToAPI)
+        .then((response) => response.json())
+        .then((data) => {
+          const { sunset } = data.sys;
           const date = this.msToTime(sunset);
           this.setState({
             temp: data.main.temp,
@@ -96,39 +93,24 @@ export default class Home extends Component {
   }
 
   /**
-   * Function converts milliseconds to seconds, minutes, hours
-   * @param duration milliseconds
-   * @returns {string} readable date
-   */
-  msToTime(duration) {
-    let seconds,
-      minutes,
-      hours,
-      date = new Date();
-    date.setTime(duration);
-    hours = (date.getHours() < 10) ? '0' + date.getHours() : date.getHours();
-    minutes = (date.getMinutes() < 10) ? '0' + date.getMinutes() : date.getMinutes();
-    seconds = (date.getSeconds() < 10) ? '0' + date.getSeconds() : date.getSeconds();
-
-    return hours + ':' + minutes + ':' + seconds;
-  }
-
-  /**
    * Biography part
    */
 
   sortByFunction = () => {
-    const updateEvents = { ...this.state.events };
-    const updateSorting = this.state.sortedByFunc;
+    const { events, sortedByFunc } = this.state;
+    const updateEvents = { ...events };
+    const updateSorting = sortedByFunc;
     let sorted;
-    updateSorting ? sorted = Object.values(updateEvents)
-        .sort((a, b) => ((+a.date) - (+b.date)))
-      : sorted = Object.values(updateEvents)
+    if (updateSorting) {
+      sorted = Object.values(updateEvents)
+        .sort((a, b) => ((+a.date) - (+b.date)));
+    } else {
+      sorted = Object.values(updateEvents)
         .reverse();
-
-    for (let key in Object.keys(updateEvents)) {
-      updateEvents[key] = sorted[key];
     }
+    Object.keys(updateEvents).forEach((key) => {
+      updateEvents[key] = sorted[key];
+    });
     this.setState({
       events: updateEvents,
       sortedByFunc: !updateSorting
@@ -136,24 +118,23 @@ export default class Home extends Component {
   };
 
   sortByBubbleSorting = () => {
-    const updateEvents = { ...this.state.events };
-    const updateSorting = this.state.sortedByBubble;
-    for (let i = Object.keys(updateEvents).length - 1; i >= 0; i--) {
-      for (let j = 0; j < i; j++) {
-        let current = updateEvents[j];
-        let previous = updateEvents[j + 1];
+    const { events, sortedByBubble } = this.state;
+    const updateEvents = { ...events };
+    const updateSorting = sortedByBubble;
+    for (let i = Object.keys(updateEvents).length - 1; i >= 0; i -= 1) {
+      for (let j = 0; j < i; j += 1) {
+        const current = updateEvents[j];
+        const previous = updateEvents[j + 1];
         if (updateSorting) {
           if (current.event.toLowerCase() > previous.event.toLowerCase()) {
-            let temp = updateEvents[j];
+            const temp = updateEvents[j];
             updateEvents[j] = updateEvents[j + 1];
             updateEvents[j + 1] = temp;
           }
-        } else {
-          if (current.event.toLowerCase() < previous.event.toLowerCase()) {
-            let temp = updateEvents[j];
-            updateEvents[j] = updateEvents[j + 1];
-            updateEvents[j + 1] = temp;
-          }
+        } else if (current.event.toLowerCase() < previous.event.toLowerCase()) {
+          const temp = updateEvents[j];
+          updateEvents[j] = updateEvents[j + 1];
+          updateEvents[j + 1] = temp;
         }
       }
     }
@@ -164,21 +145,20 @@ export default class Home extends Component {
   };
 
 
-  rowHandleClick = event => {
+  rowHandleClick = (event) => {
     event.preventDefault();
-    let { selected } = this.state;
+    const { selected } = this.state;
     const index = event.currentTarget.id;
-    let current = selected[index];
+    const current = selected[index];
     selected.fill(false);
     selected[index] = !current;
     this.setState({
-      selected,
-      currentIndex: index
+      selected
     });
   };
 
   dragStart = (e) => {
-    const id = e.currentTarget.id;
+    const { id } = e.currentTarget;
     e.dataTransfer.setData('id', id);
     e.dataTransfer.effectAllowed = 'move';
     const { selected } = this.state;
@@ -228,13 +208,10 @@ export default class Home extends Component {
   };
 
   addEvent = () => {
-    const updateEvents = { ...this.state.events };
-    const year = +this.state.year;
-    const text = this.state.text;
+    const { events, yearEvent, text } = this.state;
+    const updateEvents = { ...events };
+    const year = +yearEvent;
     if (!year || !text) {
-      return;
-    }
-    if (isNaN(year)) {
       return;
     }
     if (year <= 0 || year >= 3000) {
@@ -250,33 +227,59 @@ export default class Home extends Component {
   };
 
   deleteLastEvent = () => {
-    const updateEvents = { ...this.state.events };
-    const lastYear = this.state.year;
-    const lastText = this.state.text;
-    for (let key in updateEvents) {
+    const { events, year, text } = this.state;
+    const updateEvents = { ...events };
+    const lastYear = year;
+    const lastText = text;
+    Object.keys(updateEvents).forEach((key) => {
       if (lastText === updateEvents[key].event && +lastYear === +updateEvents[key].date) {
         delete updateEvents[key];
       }
-    }
+    });
     this.setState({
       events: updateEvents,
     });
   };
 
+  /**
+   * Function converts milliseconds to seconds, minutes, hours
+   * @param duration milliseconds
+   * @returns {string} readable date
+   */
+  msToTime(duration) {
+    const date = new Date();
+    date.setTime(duration);
+    const hours = (date.getHours() < 10) ? `0${date.getHours()}` : date.getHours();
+    const minutes = (date.getMinutes() < 10) ? `0${date.getMinutes()}` : date.getMinutes();
+    const seconds = (date.getSeconds() < 10) ? `0${date.getSeconds()}` : date.getSeconds();
+
+    return `${hours}:${minutes}:${seconds}`;
+  }
+
 
   render() {
+    const {
+      city,
+      country,
+      temp,
+      pressure,
+      sunset,
+      error,
+      events,
+      selected
+    } = this.state;
     return (
       <HomeView
-        /*Forecast*/
-        city={this.state.city}
-        country={this.state.country}
-        temp={this.state.temp}
-        pressure={this.state.pressure}
-        sunset={this.state.sunset}
-        error={this.state.error}
-        /*Biography*/
-        events={this.state.events}
-        selected={this.state.selected}
+        /* Forecast */
+        city={city}
+        country={country}
+        temp={temp}
+        pressure={pressure}
+        sunset={sunset}
+        error={error}
+        /* Biography */
+        events={events}
+        selected={selected}
         onDrop={this.onDrop}
         addYear={this.addYear}
         addText={this.addText}

@@ -4,11 +4,9 @@ import PropTypes from 'prop-types';
 const HeaderView = ({ logo, menu }) => {
   return (
     <header>
-      <a className="logo">{logo}</a>
+      <a href="/#" className="logo">{logo}</a>
       <nav className="menu">
-        {menu.map((menuItem) =>
-          <a href="#">{menuItem}</a>
-        )}
+        {menu.map((menuItem) => <a href="/#">{menuItem}</a>)}
       </nav>
     </header>
   );
@@ -19,11 +17,12 @@ HeaderView.propTypes = {
   menu: PropTypes.arrayOf(
     PropTypes.objectOf(
       PropTypes.string
-    ))
+    )
+  ).isRequired
 };
 
 HeaderView.defaultProps = {
-  projectName: ''
+  logo: 'logo'
 };
 
 export default HeaderView;

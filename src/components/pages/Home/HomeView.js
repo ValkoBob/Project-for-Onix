@@ -5,13 +5,28 @@ import Biography from './components/Biography';
 import Forecast from './components/Forecast';
 
 const HomeView = ({
-  city, country, temp, pressure, sunset, error,
-  events, selected, onDrop, addYear, addText, deleteLastEvent,
-  addEvent, rowHandleClick, dragStart, dragOver, dragLeave,
-  sortByFunction, sortByBubbleSorting
+  city,
+  country,
+  temp,
+  pressure,
+  sunset,
+  error,
+  events,
+  selected,
+  onDrop,
+  addYear,
+  addText,
+  deleteLastEvent,
+  addEvent,
+  rowHandleClick,
+  dragStart,
+  dragOver,
+  dragLeave,
+  sortByFunction,
+  sortByBubbleSorting
 }) => {
   return (
-    <Fragment>
+    <>
       <Biography
         events={events}
         selected={selected}
@@ -35,15 +50,15 @@ const HomeView = ({
         sunset={sunset}
         error={error}
       />
-    </Fragment>
+    </>
   );
 };
 
 HomeView.propTypes = {
   city: PropTypes.string,
   country: PropTypes.string,
-  temp: PropTypes.string,
-  pressure: PropTypes.string,
+  temp: PropTypes.number,
+  pressure: PropTypes.number,
   sunset: PropTypes.string,
   error: PropTypes.string,
   events: PropTypes.arrayOf(
@@ -51,12 +66,12 @@ HomeView.propTypes = {
       date: PropTypes.string,
       event: PropTypes.string
     })
-  ),
+  ).isRequired,
   selected: PropTypes.arrayOf(
     PropTypes.objectOf(
       PropTypes.bool
     )
-  ),
+  ).isRequired,
   onDrop: PropTypes.func,
   addYear: PropTypes.func,
   addText: PropTypes.func,

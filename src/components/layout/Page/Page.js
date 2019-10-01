@@ -10,9 +10,10 @@ export default class Header extends Component {
   }
 
   render() {
+    const { projectName } = this.state;
     return (
       <PageView
-        projectName={this.state.projectName}
+        projectName={projectName}
       />
     );
   }

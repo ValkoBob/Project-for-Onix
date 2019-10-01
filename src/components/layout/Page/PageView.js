@@ -1,7 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
-import PropTypes from 'prop-types';
 
 const PageView = ({ projectName }) => {
   return (
@@ -17,7 +17,7 @@ const PageView = ({ projectName }) => {
             <li>european soccer;</li>
             <li>like to play computer games.</li>
           </ul>
-          <button>Learn more</button>
+          <button type="button">Learn more</button>
         </div>
         <Footer/>
       </div>

@@ -12,11 +12,12 @@ export default class Header extends Component {
   }
 
   render() {
+    const { authorName, gitHub, linkToOriginal } = this.state;
     return (
       <FooterView
-        authorName={this.state.authorName}
-        github={this.state.gitHub}
-        linkToOriginal={this.state.linkToOriginal}
+        authorName={authorName}
+        github={gitHub}
+        linkToOriginal={linkToOriginal}
       />
     );
   }

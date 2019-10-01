@@ -14,9 +14,9 @@ class App extends Component {
   render() {
     return (
       <Router history={this.history}>
-        <Page/>
+        <Page />
         <Switch>
-          <Route exact strict path="/" component={Home}/>
+          <Route exact strict path="/" component={Home} />
         </Switch>
       </Router>
     );
