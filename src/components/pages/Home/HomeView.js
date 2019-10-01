@@ -1,6 +1,7 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
+import Scroll from './components/Scroll';
 import Biography from './components/Biography';
 import Forecast from './components/Forecast';
 
@@ -23,10 +24,16 @@ const HomeView = ({
   dragOver,
   dragLeave,
   sortByFunction,
-  sortByBubbleSorting
+  sortByBubbleSorting,
+  handleScrollToUp,
+  scrollVisibility
 }) => {
   return (
     <>
+      <Scroll
+        handleScrollToUp={handleScrollToUp}
+        scrollVisibility={scrollVisibility}
+      />
       <Biography
         events={events}
         selected={selected}
@@ -83,6 +90,8 @@ HomeView.propTypes = {
   dragLeave: PropTypes.func,
   sortByFunction: PropTypes.func,
   sortByBubbleSorting: PropTypes.func,
+  scrollVisibility: PropTypes.bool.isRequired,
+  handleScrollToUp: PropTypes.func.isRequired
 };
 
 HomeView.defaultProps = {

@@ -7,7 +7,7 @@ const PageView = ({ projectName }) => {
   return (
     <section className="container">
       <div className="first_page">
-        <Header/>
+        <Header />
         <div className="info-text-block" id="project">
           <h1>{projectName}</h1>
           <ul>
@@ -19,7 +19,7 @@ const PageView = ({ projectName }) => {
           </ul>
           <button type="button">Learn more</button>
         </div>
-        <Footer/>
+        <Footer />
       </div>
     </section>
   );

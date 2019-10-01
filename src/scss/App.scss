@@ -300,3 +300,33 @@ textarea {
   display: none;
 }
 
+.scrollToTop {
+  width: 60px;
+  height: 60px;
+  background: #292929;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  border-radius: 50%;
+  font-size: 50px;
+  color: #8f8f8f;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.scrollToTop i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.scrollToTop:hover {
+  opacity: 1;
+}
+
+.hiddenScroll {
+  display: none;
+}
+

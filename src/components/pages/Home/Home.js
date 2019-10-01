@@ -61,7 +61,10 @@ export default class Home extends Component {
       sunset: undefined,
       error: undefined,
       linkToAPI: `http://api.openweathermap.org/data/2.5/weather?q=Kiev
-        &appid=d90ac9c73c6a02a42b4cf0bdfbcd3ae9&units=metric`
+        &appid=d90ac9c73c6a02a42b4cf0bdfbcd3ae9&units=metric`,
+      scrollVisibility: false,
+      scrolled: window.pageYOffset,
+      coords: document.documentElement.clientHeight
     };
   }
 
@@ -70,26 +73,8 @@ export default class Home extends Component {
    */
 
   componentDidMount() {
-    const { inputCity, linkToAPI } = this.state;
-    if (inputCity !== undefined) {
-      fetch(linkToAPI)
-        .then((response) => response.json())
-        .then((data) => {
-          const { sunset } = data.sys;
-          const date = this.msToTime(sunset);
-          this.setState({
-            temp: data.main.temp,
-            city: data.name,
-            country: data.sys.country,
-            pressure: data.main.pressure,
-            sunset: date,
-            error: undefined
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
+    this.makeFetchingApi();
+    window.addEventListener('scroll', this.scroll);
   }
 
   /**
@@ -241,6 +226,44 @@ export default class Home extends Component {
     });
   };
 
+  scroll = () => {
+    const { scrolled, coords } = this.state;
+    this.setState({
+      scrollVisibility: scrolled > coords,
+      scrolled: window.pageYOffset
+    });
+  };
+
+  handleScrollToUp = () => {
+    if (window.pageYOffset > 0) {
+      window.scrollBy(0, -80);
+      setTimeout(this.handleScrollToUp, 0);
+    }
+  };
+
+  makeFetchingApi() {
+    const { inputCity, linkToAPI } = this.state;
+    if (inputCity !== undefined) {
+      fetch(linkToAPI)
+        .then((response) => response.json())
+        .then((data) => {
+          const { sunset } = data.sys;
+          const date = this.msToTime(sunset);
+          this.setState({
+            temp: data.main.temp,
+            city: data.name,
+            country: data.sys.country,
+            pressure: data.main.pressure,
+            sunset: date,
+            error: undefined
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }
+
   /**
    * Function converts milliseconds to seconds, minutes, hours
    * @param duration milliseconds
@@ -266,7 +289,8 @@ export default class Home extends Component {
       sunset,
       error,
       events,
-      selected
+      selected,
+      scrollVisibility
     } = this.state;
     return (
       <HomeView
@@ -291,6 +315,8 @@ export default class Home extends Component {
         dragLeave={this.dragLeave}
         sortByFunction={this.sortByFunction}
         sortByBubbleSorting={this.sortByBubbleSorting}
+        handleScrollToUp={this.handleScrollToUp}
+        scrollVisibility={scrollVisibility}
       />
     );
   }
