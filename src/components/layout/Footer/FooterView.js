@@ -1,15 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const FooterView = ({ gitHub, linkToOriginal, authorName }) => {
+const FooterView = ({
+  gitHub,
+  linkToOriginal,
+  authorName 
+}) => {
   return (
     <footer>
       <div className="socials">
         <div className="git">
-          <a href={gitHub} aria-label="Save"><i className="fab fa-github"/></a>
+          <a href={gitHub} aria-label="Save"><i className="fab fa-github" /></a>
         </div>
         <div className="link_to_original">
-          <a href={linkToOriginal} aria-label="Save"><i className="far fa-image"/></a>
+          <a href={linkToOriginal} aria-label="Save"><i className="far fa-image" /></a>
         </div>
       </div>
       <h2 id="author">

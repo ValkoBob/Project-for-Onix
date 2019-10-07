@@ -13,6 +13,7 @@
     "react-router-dom": "^5.0.1"
   },
   "scripts": {
+    "prestart": "npx eslint . --max-warnings=0",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -43,5 +44,11 @@
     "history": "^4.10.1",
     "husky": "^3.0.7",
     "react-router-dom": "^5.0.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npx eslint . --max-warnings=0",
+      "pre-push": "npx eslint . --max-warnings=0"
+    }
   }
 }

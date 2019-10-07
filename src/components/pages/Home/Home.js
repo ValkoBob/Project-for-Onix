@@ -259,6 +259,7 @@ export default class Home extends Component {
           });
         })
         .catch((error) => {
+          // eslint-disable-next-line no-console
           console.log(error);
         });
     }
