@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import WithScroll from '../../../../hoc/WithScroll';
 
-const Scroll = ({ handleScrollToUp, scrollVisibility }) => {
+const Component = ({ handleScrollToUp, scrollVisibility, color }) => {
   return (
     <div>
       {
         scrollVisibility
         && (
-        <button type="button" className="scrollToTop" onClick={handleScrollToUp}>
+        <button type="button" className="scrollToTop" color={color} onClick={handleScrollToUp}>
           <i className="fas fa-angle-up"> </i>
         </button>
         )
@@ -16,8 +17,12 @@ const Scroll = ({ handleScrollToUp, scrollVisibility }) => {
   );
 };
 
-Scroll.propTypes = {
+Component.propTypes = {
   scrollVisibility: PropTypes.bool.isRequired,
-  handleScrollToUp: PropTypes.func.isRequired
+  handleScrollToUp: PropTypes.func.isRequired,
+  color: PropTypes.string.isRequired
 };
+
+const Scroll = WithScroll(Component);
+
 export default Scroll;
