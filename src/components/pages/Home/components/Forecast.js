@@ -58,8 +58,8 @@ Forecast.propTypes = {
 Forecast.defaultProps = {
   city: '',
   country: '',
-  temp: '',
-  pressure: '',
+  temp: 0,
+  pressure: 0,
   sunset: '',
   error: '',
 };

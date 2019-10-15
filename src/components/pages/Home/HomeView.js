@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import Scroll from './components/Scroll';
 import Biography from './components/Biography';
 import Forecast from './components/Forecast';
+import Switcher from './components/Switcher';
+import { ThemeContext } from '../../context/ThemeContext';
 
 const HomeView = ({
   city,
@@ -30,33 +32,40 @@ const HomeView = ({
 }) => {
   return (
     <>
-      <Scroll
-        handleScrollToUp={handleScrollToUp}
-        scrollVisibility={scrollVisibility}
-      />
-      <Biography
-        events={events}
-        selected={selected}
-        onDrop={onDrop}
-        addYear={addYear}
-        addText={addText}
-        deleteLastEvent={deleteLastEvent}
-        addEvent={addEvent}
-        rowHandleClick={rowHandleClick}
-        dragStart={dragStart}
-        dragOver={dragOver}
-        dragLeave={dragLeave}
-        sortByFunction={sortByFunction}
-        sortByBubbleSorting={sortByBubbleSorting}
-      />
-      <Forecast
-        city={city}
-        country={country}
-        temp={temp}
-        pressure={pressure}
-        sunset={sunset}
-        error={error}
-      />
+      <ThemeContext.Consumer>
+        {({ theme }) => (
+          <section className="container" style={{ backgroundColor: theme.background }}>
+            <Scroll
+              handleScrollToUp={handleScrollToUp}
+              scrollVisibility={scrollVisibility}
+            />
+            <Biography
+              events={events}
+              selected={selected}
+              onDrop={onDrop}
+              addYear={addYear}
+              addText={addText}
+              deleteLastEvent={deleteLastEvent}
+              addEvent={addEvent}
+              rowHandleClick={rowHandleClick}
+              dragStart={dragStart}
+              dragOver={dragOver}
+              dragLeave={dragLeave}
+              sortByFunction={sortByFunction}
+              sortByBubbleSorting={sortByBubbleSorting}
+            />
+            <Forecast
+              city={city}
+              country={country}
+              temp={temp}
+              pressure={pressure}
+              sunset={sunset}
+              error={error}
+            />
+            <Switcher />
+          </section>
+        )}
+      </ThemeContext.Consumer>
     </>
   );
 };
@@ -97,8 +106,8 @@ HomeView.propTypes = {
 HomeView.defaultProps = {
   city: '',
   country: '',
-  temp: '',
-  pressure: '',
+  temp: 0,
+  pressure: 0,
   sunset: '',
   error: '',
   onDrop: undefined,

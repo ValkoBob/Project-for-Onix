@@ -6,7 +6,7 @@ const HeaderView = ({ logo, menu }) => {
     <header>
       <a href="/#" className="logo">{logo}</a>
       <nav className="menu">
-        {menu.map((menuItem) => <a href="/#">{menuItem}</a>)}
+        {menu.map((menuItem) => <a key={menuItem.id} href="/#">{menuItem}</a>)}
       </nav>
     </header>
   );
@@ -16,7 +16,7 @@ HeaderView.propTypes = {
   logo: PropTypes.string,
   menu: PropTypes.arrayOf(
     PropTypes.objectOf(
-      PropTypes.string
+      PropTypes.object
     )
   ).isRequired
 };
