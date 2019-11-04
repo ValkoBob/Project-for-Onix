@@ -1,20 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PageView from './PageView';
 
-export default class Header extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      projectName: 'My hobbies'
-    };
-  }
+const Page = () => {
+  const projectName = 'My hobbies';
+  return (
+    <PageView
+      projectName={projectName}
+    />
+  );
+};
 
-  render() {
-    const { projectName } = this.state;
-    return (
-      <PageView
-        projectName={projectName}
-      />
-    );
-  }
-}
+export default Page;

@@ -1,26 +1,19 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import HeaderView from './HeaderView';
 
-export default class Header extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      logo: 'Logo',
-      menu: [
-        'Project',
-        'About',
-        'Author'
-      ]
-    };
-  }
+const Header = () => {
+  const [logo] = useState('Logo');
+  const [menu] = useState([
+    'Project',
+    'About',
+    'Author'
+  ]);
+  return (
+    <HeaderView
+      logo={logo}
+      menu={menu}
+    />
+  );
+};
 
-  render() {
-    const { logo, menu } = this.state;
-    return (
-      <HeaderView
-        logo={logo}
-        menu={menu}
-      />
-    );
-  }
-}
+export default Header;
